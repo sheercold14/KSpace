@@ -1,0 +1,84 @@
+alg_name: "XSpace"
+name: Qwen/Qwen2.5-VL-7B-Instruct
+model_name: "qwen2.5_vl"
+model_class: Qwen2
+# tokenizer_class: Qwen2Tokenizer
+tokenizer_class: AutoProcessor
+tokenizer_name: Qwen/Qwen2.5-VL-7B-Instruct
+cache_dir: models/cache
+device: 0,1
+cpu_copy: True
+
+lora_type: "lora"
+layers: [14,15]
+num_steps: 70
+batch_size: 1
+max_length: 30
+lr: 3e-4
+weight_decay: 0
+kl_factor: 0
+rank: 128
+lora_alpha: 128
+lora_dropout: 0
+norm_constraint: false
+
+target_modules: ['up_proj', 'down_proj']
+# target_modules: ["q_proj", "v_proj", "up_proj", "down_proj"]
+# target_modules: ["q_proj", "v_proj"]
+
+exclude_modules: []
+model_parallel: false
+
+#LoRANULL
+calib_dataset: null_ds
+calib_loader_size: 256
+calib_cache: outputs/cache
+nq_open: data/LoRANULL/nq_hf_dataset.pt
+seed: 233
+save_model: True
+save_path: outputs/adapters/kspace
+Null_mode: True
+mode: build_adapters
+act_aware: False
+cov_aware: False
+singular_aware: True
+singular_aware_2: False
+first_eigen: False
+use_cache: True
+delete_name: ["embed_tokens_extend", "audio_embed", "embed_tokens"]
+null_target_modules: qwen_model.model
+# KSpace (historical internal identifier: XSpace)
+wL: 24
+wS: 8
+sim: 0.05
+update_modules: ["ALinear"]
+noise: 0.01
+num_samples: 512
+svd_thres: 10
+bn_lr: 1e-3
+svd_lr: 5e-3
+model_optimizer: Adam
+schedule: [30, 60, 80]
+gamma: 0.5
+momentum: 0
+perturb_seed: 233
+pca_seed: 42
+
+# image
+coco_image: data
+rephrase_image: data
+mmke_image: data/MMKE/data_image
+result_dir: outputs
+train_annotation_path: data/editing-data/vqa/vqa_train.json
+eval_annotation_path: data/editing-data/vqa/vqa_eval.json
+caption_train_annotation_path: data/editing-data/caption/caption_train_edit.json
+mmke_train_annotation_path: data/MMKE/data_json/entity_train.json
+
+
+# Evaluation
+all_metrics_name: 'layer1415_updown_ep70_th10_sim0.05_wL24_wS8_rank128_1e-3_5e-3_up_down_11111111.jsonl'
+json_dir: outputs/jsonl
+continuous_sample: 1
+
+real_world_eval: false
+api_key: null

@@ -1,0 +1,81 @@
+alg_name: "XSpace"
+name: microsoft/Phi-4-multimodal-instruct
+model_name: "phi4_vl"
+model_class: Phi4
+tokenizer_class: AutoProcessor
+tokenizer_name: microsoft/Phi-4-multimodal-instruct
+cache_dir: models/cache
+device: 0
+cpu_copy: True
+
+lora_type: "lora"
+layers: [7]
+num_steps: 70
+batch_size: 1
+max_length: 30
+lr: 1e-2
+weight_decay: 0
+kl_factor: 0
+rank: 128
+lora_alpha: 128
+lora_dropout: 0
+norm_constraint: false
+# target_modules: ["gate_up_proj.lora_A.vision","gate_up_proj.lora_B.vision"]
+target_modules: ["gate_up_proj.base_layer","down_proj.base_layer"]
+
+exclude_modules: ["model.embed_tokens_extend.image_embed.img_processor.encoder.layers.7.self_attn.q_proj","model.embed_tokens_extend.image_embed.img_processor.encoder.layers.7.self_attn.v_proj"]
+model_parallel: false
+
+#LoRANULL
+calib_dataset: null_ds
+calib_loader_size: 256
+calib_cache: outputs/cache
+nq_open: data/LoRANULL/nq_hf_dataset.pt
+seed: 233
+save_model: True
+save_path: outputs/adapters/kspace
+Null_mode: True
+mode: build_adapters
+act_aware: False
+cov_aware: False
+singular_aware: True
+singular_aware_2: False
+first_eigen: False
+use_cache: True
+delete_name: ["embed_tokens_extend", "audio_embed", "embed_tokens"]
+null_target_modules: phi_model.model.layers.7
+# KSpace (historical internal identifier: XSpace)
+wL: 24
+wS: 8
+sim: 0.05
+update_modules: ["ALinear"]
+noise: 0.01
+num_samples: 512
+svd_thres: 10
+bn_lr: 1e-3
+svd_lr: 5e-3
+model_optimizer: Adam
+schedule: [30, 60, 80]
+gamma: 0.5
+momentum: 0
+perturb_seed: 233
+pca_seed: 42
+
+# image
+coco_image: data
+rephrase_image: data
+mmke_image: data/MMKE/data_image
+result_dir: outputs
+train_annotation_path: data/editing-data/vqa/vqa_train.json
+eval_annotation_path: data/editing-data/vqa/vqa_eval.json
+caption_train_annotation_path: data/editing-data/caption/caption_train_edit.json
+mmke_train_annotation_path: data/MMKE/data_json/entity_train.json
+
+
+# Evaluation
+all_metrics_name: 'layer7_updown_ep70_th10_sim0.05_wL24_wS8_rank128_1e-3_5e-3_up_down_11111111.jsonl'
+json_dir: outputs/jsonl
+continuous_sample: 1
+
+real_world_eval: false
+api_key: null

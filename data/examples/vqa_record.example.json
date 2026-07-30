@@ -1,0 +1,15 @@
+[
+  {
+    "src": "What color is the object?",
+    "pred": "red",
+    "rephrase": "Which color does the object have?",
+    "alt": "blue",
+    "image": "val2014/example.jpg",
+    "image_rephrase": "val2014_image_rephrase/example.png",
+    "loc": "A textual locality question",
+    "loc_ans": "The pre-edit textual answer",
+    "m_loc": "val2014/unrelated.jpg",
+    "m_loc_q": "An unrelated visual question",
+    "m_loc_a": "The pre-edit visual answer"
+  }
+]

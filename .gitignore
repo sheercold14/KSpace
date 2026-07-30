@@ -1,0 +1,39 @@
+# Credentials and local configuration
+secrets/*
+!secrets/*.example.json
+.env
+*.pem
+*.key
+
+# Models, datasets, caches, and experiment outputs
+/models/
+data/*
+!data/README.md
+!data/examples/
+!data/examples/**
+/outputs/
+/results/
+/logs/
+/cache/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+*.npz
+*.npy
+*.jsonl
+
+# Python and editor state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
