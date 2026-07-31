@@ -2,7 +2,7 @@
 
 PyTorch implementation of KSpace, a parameter-efficient method for
 multimodal knowledge editing. KSpace initializes the frozen LoRA matrix in
-an approximate low-variance subspace of preserved activations and projects
+the null space of preserved activations and projects
 the trainable LoRA updates onto an edit-relevant knowledge subspace.
 
 The implementation is built on [EasyEdit](https://github.com/zjunlp/EasyEdit).
@@ -61,55 +61,11 @@ python scripts/run_kspace.py \
 Configurations for the other backbones are available in
 `configs/kspace/`.
 
-## Baselines
-
-Rank-matched configurations for LoRA, AdaLoRA, RoseLoRA, CorDA, and
-LoRA-Null are provided in `configs/baselines/rank128_evqa/`.
-
-```bash
-python scripts/run_baseline.py \
-  --config configs/baselines/rank128_evqa/llava_lora_r128_evqa.yaml \
-  --data-path data/editing-data/vqa/vqa_eval.json \
-  --image-root data \
-  --num-edits 1
-```
-
-All methods use the same multimodal editor and evaluation pipeline.
-
-## Code structure
-
-```text
-easyeditor/
-├── editors/                  multimodal editing pipeline
-├── evaluate/                 evaluation functions
-├── models/
-│   ├── xspace/               KSpace
-│   ├── loranull/             LoRA-Null initialization
-│   ├── lora/                 LoRA and AdaLoRA
-│   ├── roselora/             RoseLoRA
-│   ├── rome/                 ROME
-│   ├── memit/                MEMIT
-│   ├── alphaedit/            AlphaEdit
-│   ├── unke/                 UnKE
-│   ├── unike/                UniKE
-│   └── mmelo/                Multi-MELO
-└── trainer/                  multimodal model wrappers
-
-configs/                      experiment settings
-scripts/                      training and evaluation entry points
-```
-
-The main KSpace implementation is in
-`easyeditor/models/xspace/xspace_main.py`. The projected optimizer is in
-`easyeditor/models/xspace/optim/adam_svd.py`.
 
 ## Acknowledgements
 
 This codebase builds on
-[EasyEdit](https://github.com/zjunlp/EasyEdit) and includes integrations of
-several knowledge-editing and parameter-efficient fine-tuning methods. We
-thank the authors of these projects for releasing their code.
-
+[EasyEdit](https://github.com/zjunlp/EasyEdit).
 ## License
 
 The code is released under the MIT License. See [LICENSE](LICENSE).
